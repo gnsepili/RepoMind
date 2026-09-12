@@ -9,6 +9,38 @@ found in each repository.
 
 The project is called **RepoMind**; the installed skill is named **`repo-context`**.
 
+## Complete original prompts
+
+The full original `.ai/prompts` system is bundled byte-for-byte under
+[`skills/repo-context/prompts/`](skills/repo-context/prompts/). The skill reads each
+applicable prompt in full before executing it. All original templates, examples,
+walkthroughs, depth requirements, and verification criteria are included.
+
+| Purpose | Full original prompt |
+| --- | --- |
+| Orchestration | [master-context-generator.md](skills/repo-context/prompts/master-context-generator.md) |
+| Sequence guide | [sequence-guide.md](skills/repo-context/prompts/sequence-guide.md) |
+| Step 0 | [step-0-extract-global-context.md](skills/repo-context/prompts/step-0-extract-global-context.md) |
+| Step 1 | [step-1-discover-modules.md](skills/repo-context/prompts/step-1-discover-modules.md) |
+| Step 1.5 backend | [step-1.5-discover-features-backend.md](skills/repo-context/prompts/step-1.5-discover-features-backend.md) |
+| Step 1.5 frontend | [step-1.5-discover-features-frontend.md](skills/repo-context/prompts/step-1.5-discover-features-frontend.md) |
+| Step 2 | [step-2-map-relationships.md](skills/repo-context/prompts/step-2-map-relationships.md) |
+| Step 3 | [step-3-generate-module-contexts.md](skills/repo-context/prompts/step-3-generate-module-contexts.md) |
+| Step 4 | [step-4-cross-referencing.md](skills/repo-context/prompts/step-4-cross-referencing.md) |
+| Updates | [update-context.md](skills/repo-context/prompts/update-context.md) |
+| Task template | [task-prompt.md](skills/repo-context/prompts/task-prompt.md) |
+| Task guide | [task-prompt-guide.md](skills/repo-context/prompts/task-prompt-guide.md) |
+| Cross-service tasks | [cross-service-prompt.md](skills/repo-context/prompts/cross-service-prompt.md) |
+
+The short `references/` files handle portable routing and tooling. They do not
+replace the full prompts. Historical filenames inside the originals are resolved
+by the routing adapter without editing the original text. Full-stack projects run
+both feature prompts. Example systems are adapted to actual repository evidence.
+
+The initial publication used condensed instructions; this version restores the
+complete originals. The same prompt guidance is preserved, though generated
+results still vary with the model, repository, and execution.
+
 ## Quick start
 
 Requirements: Python 3.10 or newer, Git for cloning and change detection, and a
@@ -120,14 +152,20 @@ asking the agent to update context against a commit or a list of changed paths.
 ## Development
 
 The maintained skill lives in [`skills/repo-context`](skills/repo-context/SKILL.md).
-Its generation, maintenance, and mapping contracts are in the `references` folder.
+Its full generation and maintenance prompts are in `prompts/`. Portable routing
+and the supplementary source-map contract are in `references/`.
 
 ```sh
 python3 skills/repo-context/scripts/test_context.py -v
+python3 skills/repo-context/scripts/verify_prompts.py
 ```
 
 Tests run in temporary repositories and cover installation preservation and
 conflicts, Git change detection, mapping validation, exclusions, and phase state.
+The prompt verifier checks every original file against the committed SHA-256 and
+byte-count manifest. Add `--source /path/to/original/.ai/prompts` to compare the
+entire file set and contents directly with an original prompt directory. This
+checks preservation, not the semantic quality of generated context.
 
 ## Working with Superpowers
 

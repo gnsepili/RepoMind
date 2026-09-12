@@ -15,6 +15,7 @@ def load(name):
 
 
 context, installer = load("context"), load("install")
+prompt_verifier = load("verify_prompts")
 
 
 class ContextTests(unittest.TestCase):
@@ -156,6 +157,26 @@ class ContextTests(unittest.TestCase):
         self.assertEqual(second["copied_files"], 0)
         self.assertEqual((self.repo / "AGENTS.md").read_bytes(), first)
         self.assertTrue((self.repo / ".agents/skills/repo-context/SKILL.md").exists())
+
+    def test_install_preserves_complete_original_prompts_and_detects_truncation(self):
+        installer.install(self.repo)
+        skill = self.repo / ".agents/skills/repo-context"
+        source = Path(__file__).resolve().parents[1] / "prompts"
+        result = prompt_verifier.verify(skill, source)
+        self.assertTrue(result["valid"], result)
+        self.assertEqual(result["prompt_files"], 13)
+        prompt = skill / "prompts/step-3-generate-module-contexts.md"
+        prompt.write_bytes(prompt.read_bytes()[:100])
+        self.assertFalse(prompt_verifier.verify(skill)["valid"])
+
+    def test_prompt_verifier_detects_missing_and_extra_originals(self):
+        installer.install(self.repo)
+        skill = self.repo / ".agents/skills/repo-context"
+        original = skill / "prompts/step-0-extract-global-context.md"
+        original.rename(skill / "prompts/unexpected.md")
+        result = prompt_verifier.verify(skill)
+        self.assertFalse(result["valid"])
+        self.assertTrue(any("Prompt set mismatch" in error for error in result["errors"]))
 
     def test_install_conflict_preflight_does_not_change_rules(self):
         self.write("AGENTS.md", "Original rule\n")

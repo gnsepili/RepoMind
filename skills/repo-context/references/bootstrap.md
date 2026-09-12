@@ -1,75 +1,94 @@
-# Bootstrap a Repository Context Layer
+# Run the Complete Original Prompt System
 
-Use this reference to create or resume a portable `.ai/` context layer. The goal is evidence-backed navigation, not a fixed documentation volume. Inspect the repository before describing it; state whether an assertion is found in code/configuration, inferred from evidence, or unknown. Do not invent technologies, owners, APIs, or history.
+This file is a portability and orchestration adapter. The full originals in
+`../prompts/` define discovery, templates, depth, and verification. Read them
+completely according to `SKILL.md`. This adapter is not an abbreviated generation
+prompt and does not relax the originals' detailed content requirements.
 
-Run the installed read-only inventory before and after work when available:
+## Order and progress
 
-```sh
-python3 .agents/skills/repo-context/scripts/context.py inventory --repo .
-python3 .agents/skills/repo-context/scripts/context.py validate --repo .
-```
+Read `../prompts/master-context-generator.md` and `../prompts/sequence-guide.md`
+in full. The master selects the next phase; the sequence guide describes the full
+generation workflow. Execute **0 → 1 → 1.5 → 2 → 3 → 4**. Historical mentions of
+five numbered steps do not remove feature discovery. For full-stack projects run
+both frontend and backend Step 1.5 prompts, merging their indexes.
 
-Adapt discovery to the repository rather than assuming a language, framework, or one source layout. Inspect project metadata, entry points, dependency manifests, configuration, tests, generated-code markers, and source roots. Preserve existing `.ai/` layouts and filenames: extend a compatible existing alias instead of moving or duplicating it. Context output belongs in `.ai/`; an installed copy of this skill belongs at `.agents/skills/repo-context`.
+For a full setup, chain the master's next-step executions automatically, recording
+progress after each. For an explicit single-step request, stop after that step and
+report the next. Verify the phase's checklist before marking it complete;
+directories or headings alone are not proof. Resume a partial phase by rereading
+its entire prompt and checking existing artifacts. Preserve valid authored context.
 
-## Resume safely
+The source map in [document-contract.md](document-contract.md) supplements the
+original workflow. Run structural validation at finalization; early phases may
+have intentionally incomplete navigation and maps. Never bypass original semantic
+or content-quality verification because the helper passes.
 
-Read `.ai/context-map.json`, `.ai/agents.md`, and existing context files first. The map's optional `bootstrap.completed_steps` and `skipped_steps` are the progress record. Resume the first incomplete phase; repair a partial phase rather than treating a file's existence as completion. A phase may be skipped only when inapplicable and its reason is recorded. Never delete user prose solely to regenerate context.
+## Resolve historical prompt paths
 
-Complete phases 0, 1, 2, 3, and 4 even when discovery finds a small or empty surface;
-describe what was actually found. Only phase 1.5 may be skipped wholesale. Optional
-outputs such as a data model or pattern documents may be absent while their phase
-is complete. Record those absences in `bootstrap.omitted_artifacts`, keyed by a
-repository-relative output path (or directory) with the reason as the value.
+Original files are preserved byte-for-byte, including old path references.
+Resolve these aliases to files under the installed skill's `prompts/` directory:
 
-## Phase 0 — global context and recurring patterns
+| Original reference or alias | Bundled filename |
+| --- | --- |
+| `00-extract-global-context.md`, `.ai/step-0-extract-global-context.md` | `step-0-extract-global-context.md` |
+| `01-discover-modules.md`, `.ai/step-1-discover-modules.md` | `step-1-discover-modules.md` |
+| `step-1_5-discover-features-backend.md` | `step-1.5-discover-features-backend.md` |
+| `step-1_5-discover-features-frontend.md` | `step-1.5-discover-features-frontend.md` |
+| `02-map-relationships.md`, `.ai/step-2-map-relationships.md` | `step-2-map-relationships.md` |
+| `03-generate-module-contexts.md`, `.ai/step-3-generate-module-contexts.md` | `step-3-generate-module-contexts.md` |
+| `04-cross-reference.md`, `.ai/step-4-cross-referencing.md` | `step-4-cross-referencing.md` |
+| `SEQUENCE-GUIDE.md` | `sequence-guide.md` |
+| `TASK-PROMPT-TEMPLATE.md` | `task-prompt-guide.md` (also read the concrete example in `task-prompt.md`) |
+| `cross-service-task-prompt.md` | `cross-service-prompt.md` |
 
-Create or extend `.ai/agents.md` as the root navigation document. Record the system purpose, consumers, repository/source layout, observed stack, conventions, configuration and development/test workflow, cross-cutting concerns, and a categorized pattern index. Include only facts supported by paths or other evidence.
+Normalize the same aliases when prefixed by `.ai/`, `.ai/prompts/`, or
+`prompts/context-generation/`. Correct filenames resolve directly.
+The referenced Android-specific Step 1.5 file was not supplied in the originals.
+Do not pretend it exists: read the full frontend prompt for UI capabilities and
+the backend prompt for applicable service/API capabilities, adapt to mobile
+components, and record that adaptation.
 
-Inductively discover recurring patterns: shared abstractions and wrappers, repeated control/data/integration structures, cross-cutting practices (errors, logging, persistence, caching, auth, messaging, validation, configuration, concurrency), and repeated dependency usage. Create `.ai/patterns/<name>.md` only when a real reusable pattern exists. A pattern should explain its purpose and rationale, evidence and locations, how it works, applicable scenarios, constraints and anti-patterns, gotchas, and links to related patterns/modules. Prefer representative code or concrete paths over generic tutorial prose. Explain important decisions and consequences deeply enough to guide work, but let the repository's complexity determine length.
+## Inputs and outputs
 
-## Phase 1 — discover modules
+Installed originals live at `.agents/skills/repo-context/prompts/`. Generated
+context belongs in the target's `.ai/`. References to `.ai/agents.md`, modules,
+patterns, features, and architecture mean the target's generated documents.
 
-Identify natural ownership boundaries from directories, public interfaces, imports, domain responsibilities, models, route groups, and shared utilities. Do not make every file a module or collapse unrelated responsibilities into one. Cover core, supporting, infrastructure, and utility modules; call out uncertain/circular boundaries instead of concealing them.
+New projects use `architecture/module-interactions.md` and applicable
+`architecture/data-model.md`. If existing context uses compatible aliases, reuse
+those actual paths consistently. In generated usage guides, replace historical
+prompt links with working relative links into the installed skill. For example,
+from `.ai/README.md`, link to
+`../.agents/skills/repo-context/prompts/update-context.md`. Adjust the relative
+prefix for other document depths. Preserve original prompt files themselves.
 
-Update the Module Map in `.ai/agents.md` with an informative purpose and a stable link for every documented module. Create no module detail files yet unless preserving an existing layout requires it. Use existing naming conventions; otherwise use portable, readable kebab-case filenames under `.ai/modules/`.
+## Preserve the original depth
 
-## Phase 1.5 — discover features where applicable
+Follow all applicable sections, templates, explanations, walkthroughs, code-based
+examples, gotchas, and checklists in each full prompt. Preserve their stated depth
+and length requirements. Do not turn the detailed outputs into short inventories.
+For unsupported items, explicitly record the evidence and reason for
+non-applicability rather than fabricating content or silently dropping a section.
 
-This phase is deliberately between module discovery and relationship mapping. If the repository exposes user, operator, or consumer capabilities, create `.ai/features/<feature>.md` and add a Features Map to `agents.md`.
+Payment, Stripe, ShipStation, WMS paths, Trip Configuration, sample endpoints,
+code snippets, and placeholders are illustrative. Discover actual equivalents in
+the target; do not implement example features or treat them as project facts.
 
-For server/API systems, group routes, RPC methods, schemas, or commands by user capability and map each to its handling modules, data, business rules, errors, dependencies, and flow. For UI systems, group screens/routes by capability and map components, state, navigation, backend calls, loading/error behavior, and performance decisions. For libraries, workers, infrastructure, or repositories without a meaningful user-facing feature surface, skip the phase and record why in `skipped_steps`.
+Do not skip Step 1.5 simply because a project is a library, CLI, worker, or
+infrastructure project; inspect its consumer capabilities using the full prompts.
+Record a phase skip only when there is no applicable feature surface. Optional
+outputs such as a data model may be absent with an explicit reason under
+`bootstrap.omitted_artifacts`; that does not skip the architecture phase.
+Execute phases 0, 1, 2, 3, and 4 against the actual project even when it is small.
 
-Features link to implementation modules and relevant patterns; modules link back to the features they implement. Do not infer endpoints or screens merely from directory names.
+## Verification and scope
 
-## Phase 2 — map relationships and architecture
+Complete the original navigation exercises and content checklists. Perform
+hypothetical feature/debugging exercises through inspection or isolated fixtures
+unless the user authorized those implementation changes. Adapt existing ADR
+checks and the `/decision` example to the target's actual decision-record process.
 
-Create the canonical `.ai/architecture/module-interactions.md` in new layouts, or update an existing compatible architecture alias in established layouts. Document architecture as observed: entry points, important end-to-end flows, direct calls, asynchronous messages/events, shared state, public cross-module contracts, external systems with evidence, dependency direction, and circular or unclear boundaries. Explain why a synchronous, asynchronous, or shared-state interaction matters when evidence supports that explanation.
-
-Create `.ai/architecture/data-model.md` only for a non-trivial persistent/domain data model. Describe entity ownership, relationships, invariants, state transitions, access rules, integrity/performance considerations, and source evidence. For stateless or minimal-data projects, record the omitted artifact reason under `bootstrap.omitted_artifacts`; mark phase 2 complete after verifying module interactions. Update `agents.md` with architecture and external-system navigation.
-
-## Phase 3 — generate module context
-
-Create or update one `.ai/modules/<module>.md` per Module Map entry. Each file should make the module usable without a full codebase reread: purpose and boundaries; key components and public surface; inbound/outbound dependencies; data/state; important flows; interfaces/endpoints/events; patterns; features; configuration/external systems; testing; and concrete gotchas. Link to actual source locations and other context files. Include examples only when they clarify a non-obvious contract or behavior; do not pad simple modules to meet a line count.
-
-## Phase 4 — cross-reference and finalize
-
-Make context navigable in both directions: patterns list where used modules; modules link dependencies, patterns, and features; features link modules and patterns; architecture links relevant patterns/modules. Verify every relative link, map entry, and source association. Create `.ai/README.md` describing the structure and task-navigation flow: start at `agents.md`, select features/modules, follow patterns and architecture, then update context with the change. Remove placeholders only when replacing them with evidence, not by guessing.
-
-Finish by updating `.ai/context-map.json` using the contract in `document-contract.md`, recording each generated document's sources and `related` links. Mark completed phases only after validation passes. `agents.md` and `README.md` may have an empty `sources` list when they are navigation-only; every other generated context document needs source coverage.
-
-## Completion checks
-
-- `agents.md`, patterns, module map, architecture, modules, and README form a coherent graph.
-- Feature documentation is completed or explicitly skipped with a reason.
-- `module-interactions.md` exists; `data-model.md` exists only when applicable.
-- Every context document has a context-map entry, accurate source globs, and explicit related documents.
-- No placeholders, fabricated facts, or broken links remain.
-- `python3 .agents/skills/repo-context/scripts/context.py validate --repo .` reports success (or any tool limitation is reported with the manual checks performed).
-
-## Use context for a task
-
-For a feature, bug, refactor, investigation, or documentation task: begin at `.ai/agents.md`; identify the relevant feature, module, pattern, and architecture documents; read their direct `related` links and source evidence as needed; then make a plan that names affected files, contracts, risks, tests, and context updates. Treat context as a navigation aid, not a substitute for reading changed code. Update affected context after the implementation or investigation resolves the facts.
-
-## Map declared cross-repository work
-
-When the task explicitly names multiple repositories or services, read each declared repository's `.ai/agents.md` and relevant documents. Create or update a cross-repository mapping only within the scope the user authorized. Record participating repositories, per-repository modules and changes, shared contracts/data/events, ownership, ordering, compatibility, rollback/failure behavior, and verification. Preserve shared contracts and coordinate their compatible updates; do not assume a particular repository name, database, deployment topology, or shared ownership.
+Run `scripts/context.py validate --repo <target>` for supplementary structural
+checks. Report that result separately from semantic and template verification.
+The helper cannot prove that the agent read the prompts or met their depth.
